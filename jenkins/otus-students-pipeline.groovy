@@ -1,5 +1,5 @@
 timeout(60) {
-    node('python-jenkins-slave') {
+    node('maven') {
         timestamps {
             wrap([$class: 'BuildUser']){
                 summary = """<b>Owner:</b> ${env.BUILD_USER}"""
