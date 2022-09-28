@@ -1,8 +1,9 @@
 timeout(60) {
-    node('maven') {
+    node('maven-slave') {
         timestamps {
             wrap([$class: 'BuildUser']){
                 summary = """<b>Owner:</b> ${env.BUILD_USER}"""
+            }
             stage('Checkout') {
                 checkout([
                     $class: 'GitSCM',

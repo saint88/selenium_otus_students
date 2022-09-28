@@ -23,7 +23,8 @@ public class ChromeWebDriver implements IDriver {
     chromeOptions.addArguments("--homepage=about:blank");
     chromeOptions.addArguments("--ignore-certificate-errors");
     chromeOptions.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-    chromeOptions.setCapability(CapabilityType.VERSION, System.getProperty("browser.version", ""));
+    chromeOptions.setCapability(CapabilityType.VERSION, System.getProperty("browser.version", "101.0"));
+    chromeOptions.setCapability(CapabilityType.BROWSER_NAME, System.getProperty("browser", "chrome"));
     chromeOptions.setCapability("enableVNC", Boolean.parseBoolean(System.getProperty("enableVNC", "false")));
     chromeOptions.setHeadless(HEADLESS);
 
