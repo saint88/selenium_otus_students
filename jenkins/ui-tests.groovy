@@ -8,6 +8,9 @@ timeout(60) {
             stage('Checkout') {
                 checkout scm
             }
+            stage('Running UI test') {
+                sh "mvn test -Dbrowser=${BROWSER} -Dwebdriver.base.url=${BASE_URL} -Dbrowser.version=${BROWSER_VERSION} -Dwebdriver.remote.url=http://127.0.0.1:4445"
+            }
         }
     }
 }
