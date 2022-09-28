@@ -8,12 +8,12 @@ timeout(60) {
             stage('Checkout') {
                 checkout scm
             }
-            stage('Ping selenoid') {
-                sh "telnet 127.0.0.1 4445"
-            }
-            // stage('Running UI test') {
-            //     sh "mvn test -Dbrowser=${BROWSER} -Dwebdriver.base.url=${BASE_URL} -Dbrowser.version=${BROWSER_VERSION} -Dwebdriver.remote.url=http://127.0.0.1:4445"
+            // stage('Ping selenoid') {
+            //     sh "telnet 127.0.0.1 4445"
             // }
+            stage('Running UI test') {
+                sh "mvn test -Dbrowser=${BROWSER} -Dwebdriver.base.url=${BASE_URL} -Dbrowser.version=${BROWSER_VERSION} -Dwebdriver.remote.url=http://127.0.0.1:4445/wd/hub"
+            }
         }
     }
 }
