@@ -6,14 +6,7 @@ timeout(60) {
                 currentBuild.description = summary
             }
             stage('Checkout') {
-                // checkout scm
-                checkout([
-                                $class: 'GitSCM',
-                                branches: [[name: "refs/heads/master"]],
-                                doGenerateSubmoduleConfigurations: false,
-                                submoduleCfg: [],
-                                userRemoteConfigs: [[credentialsId: 'jenkins', url: 'git@github.com:saint88/selenium_otus_students.git']]
-                            ])
+                checkout scm
             }
         }
     }
