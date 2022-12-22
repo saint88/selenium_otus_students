@@ -1,41 +1,27 @@
 timeout(60) {
-    node('maven-slave') {
-        timestamps {
-            wrap([$class: 'BuildUser']){
-                summary = """<b>Owner:</b> ${env.BUILD_USER}"""
-                currentBuild.description = summary
-            }
-            stage('Checkout') {
-                checkout scm
-            }
-            // stage('Ping selenoid') {
-            //     sh "telnet 127.0.0.1 4445"
-            // }
-            stage('Running UI test') {
-                // result = sh "mvn test -Dbrowser=${BROWSER} -Dwebdriver.base.url=${BASE_URL} -Dbrowser.version=${BROWSER_VERSION} -Dwebdriver.remote.url=http://127.0.0.1:4445/wd/hub"
-                // if(result > 0) {
-                //     currentBuild.result = 'UNSTABLE'
-                // }
-
-                def exitCode = sh(
+    node("maven-slave") {
+        stage("Checkout") {
+            checkout scm
+        }
+        stage("Run tests") {
+            def exitCode = sh(
                     returnStatus: true,
                     script: """
-                    mvn test -Dbrowser=${BROWSER} -Dwebdriver.base.url=${BASE_URL} -Dbrowser.version=${BROWSER_VERSION} -Dwebdriver.remote.url=http://127.0.0.1:4445/wd/hub
+                    mvn test -Dbrowser=$BROWSER -Dbrowser.version=$BROWSER_VERSION -Dwebdriver.base.url=$BASE_URL -Dwebdriver.remote.url=$GRID_URL
                     """
-                    )
-                if (exitCode == 1) {
-                    currentBuild.result = 'UNSTABLE'
-                }
+            )
+            if(exitCode == 1) {
+                currentBuild.result = 'UNSTABLE'
             }
-            stage('Publication allure report') {
-                allure([
+        }
+        stage("Publish allure results") {
+            allure([
                     includeProperties: false,
                     jdk: '',
                     properties: [],
                     reportBuildPolicy: 'ALWAYS',
                     results: [[path: 'allure-results']]
-                ])
-            }
+            ])
         }
     }
 }

@@ -3,6 +3,7 @@ package components;
 import annotations.Component;
 import data.menu.CourcesData;
 import data.menu.MenuItemData;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,6 +36,7 @@ public class HeaderMenuComponent extends AnyComponentAbs<HeaderMenuComponent> {
     return this;
   }
 
+  @Step("Проверяем, что подменю {menuItemData} не отображается на странице")
   public HeaderMenuComponent checkSubMenuListNotVisible(MenuItemData menuItemData) {
     assert standartWaiter.waitForElementNotVisible(
         driver.findElement(By.xpath(String.format(menuItemDropdownListLocator, menuItemData.getName())))
