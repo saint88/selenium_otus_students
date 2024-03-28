@@ -32,4 +32,8 @@ public abstract class CommonActions<T> {
     }
   };
 
+  public WebElement $(By locator) {
+    return driver.findElement(locator);
+  }
+
 }

@@ -4,6 +4,7 @@ import driver.impl.ChromeWebDriver;
 import driver.impl.IDriver;
 import exceptions.DriverTypeNotSupported;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.github.bonigarcia.wdm.config.Config;
 import listeners.ActionsListener;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
@@ -22,25 +23,15 @@ public class DriverFactory implements IDriverFactory {
 
   private String browserType = System.getProperty("browser", "chrome").toLowerCase(Locale.ROOT);
 
-  private static BrowserMobProxy proxy = null;
-
   @Override
   public WebDriver getDriver() {
 
-    if(proxy == null) {
-     proxy = new BrowserMobProxyServer();
-    }
-    if(!proxy.isStarted()) {
-      proxy.start(4444);
-    }
-
-    Proxy seleniumProxy = ClientUtil.createSeleniumProxy(proxy);
-
     switch (this.browserType) {
       case "chrome": {
-        WebDriverManager.chromedriver().setup();
+
+        WebDriverManager.chromiumdriver().setup();
+
         IDriver<ChromeOptions> browserSettings = new ChromeWebDriver();
-        browserSettings.getDriverOptions().setCapability(CapabilityType.PROXY, seleniumProxy);
 
         return new EventFiringDecorator<>(new ActionsListener())
             .decorate(new ChromeDriver(browserSettings.getDriverOptions()));

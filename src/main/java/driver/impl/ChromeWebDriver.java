@@ -24,23 +24,7 @@ public class ChromeWebDriver implements IDriver<ChromeOptions> {
     chromeOptions.addArguments("--homepage=about:blank");
     chromeOptions.addArguments("--ignore-certificate-errors");
     chromeOptions.setCapability(CapabilityType.BROWSER_NAME, System.getProperty("browser", "chrome"));
-    chromeOptions.setCapability("enableVNC", Boolean.parseBoolean(System.getProperty("enableVNC", "false")));
-//    chromeOptions.setHeadless(HEADLESS);
-
-//    LoggingPreferences logPrefs = new LoggingPreferences();
-//    logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
-//    chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
     return chromeOptions;
-//    if (getRemoteUrl() == null) {
-//      try {
-//        downloadLocalWebDriver(DriverManagerType.CHROME);
-//      } catch (DriverTypeNotSupported ex) {
-//        ex.printStackTrace();
-//      }
-//
-//      return new ChromeDriver(chromeOptions);
-//    } else
-//      return new RemoteWebDriver(getRemoteUrl(), chromeOptions);
   }
 }

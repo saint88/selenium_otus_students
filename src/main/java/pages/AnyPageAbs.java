@@ -1,20 +1,43 @@
 package pages;
 
 import actions.CommonActions;
+import annotations.PageValidation;
 import annotations.UrlPrefix;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class AnyPageAbs<T> extends CommonActions<T> {
 
+  protected String markerLocator = "";
+
   public AnyPageAbs(WebDriver driver) {
     super(driver);
+    markerLocator = pageValidation();
+  }
+
+  private String pageValidation() {
+    if(getClass().isAnnotationPresent(PageValidation.class)) {
+      PageValidation pageValidation = getClass().getAnnotation(PageValidation.class);
+      String markerElementLocator = pageValidation.value();
+      if(markerElementLocator.startsWith("template:")) {
+        return markerElementLocator.replace("template:", "");
+      }
+
+      By locator = null;
+      if(markerElementLocator.startsWith("/")) {
+        locator = By.xpath(markerElementLocator);
+      } else {
+        locator = By.cssSelector(markerElementLocator);
+      }
+
+      standartWaiter.waitForElementVisible($(locator));
+    }
+
+    return "";
   }
 
   private String getBaseUrl() {
